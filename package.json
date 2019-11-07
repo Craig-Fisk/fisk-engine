@@ -1,0 +1,15 @@
+{
+  "name": "fisk-engine",
+  "version": "0.0.1",
+  "description": "Typescript based HTML5 game engine",
+  "main": "index.ts",
+  "scripts": {
+    "build": "webpack --mode=development"
+  },
+  "author": "Craig Fisk <fisk.craig@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  }
+}
