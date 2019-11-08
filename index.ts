@@ -1,6 +1,7 @@
 import GameEntity from "./interfaces/GameEntity";
 import GameStage from "./interfaces/GameStage";
 import GameConfig from "./interfaces/GameConfig";
+import Interactable from "./interfaces/Interactable";
 
 export default class FiskGame {
 	height: number;
@@ -28,6 +29,8 @@ export default class FiskGame {
 		this.canvas = this.createMainCanvas(selector);
 		this.context = this.canvas.getContext('2d');
 		this.ctx = this.context as CanvasRenderingContext2D;
+		this.updateScale();
+		this.bindScreenResize();
 		this.setImageSmoothing(imageSmoothing);
 		this.customCollision = customCollision;
 		this.currentStage = initialStage;
@@ -50,7 +53,11 @@ export default class FiskGame {
         const initTranslateY = ((window.innerHeight - this.canvas.offsetHeight) / 2);
         this.canvas.style.transformOrigin = '50% 50%';
         this.canvas.style.transform = `translateX(${initTranslateX}px) translateY(${initTranslateY}px) scale(${scaleToFit})`;
-    }
+	}
+	
+	bindScreenResize() {
+		window.addEventListener('resize', this.updateScale.bind(this), false);
+	}
 	
 	getClick(event: MouseEvent) {
 		return {
@@ -76,10 +83,41 @@ export default class FiskGame {
 	onClick(event: MouseEvent) {
 		event.preventDefault();
 		const click =  this.getClick(event);
+
+		let clicked:Interactable;
+		this.currentStage.interactors.forEach(element => {
+			if(this.simpleCollisionCheck(click as GameEntity, element)) {
+				clicked = element;
+			}
+		});
+        
+        if(!clicked){
+			this.currentStage.onClickQueue.forEach(func => {
+				func(this);
+			});
+        }else{
+            clicked.onClick(event, this);
+        }
 	}
 	
 	onTouch(event: TouchEvent) {
 		event.preventDefault();
+		const touch = this.getTouch(event, this);
+
+		let touched: Interactable;
+		this.currentStage.interactors.forEach(element => {
+			if(this.simpleCollisionCheck(touch as GameEntity, element)) {
+				touched = element;
+			}
+		});
+
+		if(!touched){
+			this.currentStage.onClickQueue.forEach(func => {
+				func(this);
+			});
+        }else{
+            touched.onTouch(event, this);
+        }
 	}
 	
 	bindClick() {
