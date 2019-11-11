@@ -5,7 +5,7 @@ import Interactable from "./interfaces/Interactable";
 import SoundConfig from "./interfaces/SoundConfig";
 import ImageMap from "./interfaces/ImageMap";
 import SoundMap from "./interfaces/SoundMap";
-import {Howl, Howler} from "howler";
+import {Howl} from "howler";
 
 export default class FiskGame {
 	height: number;

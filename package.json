@@ -4,7 +4,8 @@
   "description": "Typescript based HTML5 game engine",
   "main": "index.ts",
   "scripts": {
-    "build": "webpack --mode=development"
+    "build": "webpack --mode=production",
+    "build:dev": "webpack --mode=development"
   },
   "author": "Craig Fisk <fisk.craig@gmail.com>",
   "license": "MIT",

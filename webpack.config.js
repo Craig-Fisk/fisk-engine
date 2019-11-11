@@ -1,8 +1,7 @@
 const path = require('path');
 
-module.exports = {
+const config = {
   entry: './index.ts',
-  devtool: 'inline-source-map',
   module: {
     rules: [
       {
@@ -19,4 +18,17 @@ module.exports = {
     filename: 'fisk-engine.js',
     path: path.resolve(__dirname, 'dist'),
   },
+};
+
+module.exports = (env, argv) => {
+
+  if (argv.mode === 'development') {
+    config.devtool = 'inline-source-map';
+  }
+
+  if (argv.mode === 'production') {
+    config.devtool = 'cheap-source-map';
+  }
+
+  return config;
 };
