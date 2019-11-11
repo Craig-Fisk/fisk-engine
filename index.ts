@@ -23,6 +23,7 @@ export default class FiskGame {
 	soundsLoaded: number = 0;
 	totalSounds: number = 0;
 	sounds: SoundMap;
+	soundNames: string[];
 
 	constuctor({ 
 		height, 
@@ -54,6 +55,12 @@ export default class FiskGame {
             });
         });
 	}
+
+	stopAllSounds() {
+        this.soundNames.forEach(name => {
+            this.sounds[name].stop();
+        });
+    }
 	
 	preloadImages(arr: string[], callback: () => void) {
         function last(game: FiskGame, passedCallback: () => void) {
@@ -85,7 +92,8 @@ export default class FiskGame {
             options.onload = () => {
                 last(this, callback);
             };
-            this.sounds[options.name] = new Howl(options);
+			this.sounds[options.name] = new Howl(options);
+			this.soundNames.push(options.name);
         });
     }
     
