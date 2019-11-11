@@ -2,6 +2,10 @@ import GameEntity from "./interfaces/GameEntity";
 import GameStage from "./interfaces/GameStage";
 import GameConfig from "./interfaces/GameConfig";
 import Interactable from "./interfaces/Interactable";
+import SoundConfig from "./interfaces/SoundConfig";
+import ImageMap from "./interfaces/ImageMap";
+import SoundMap from "./interfaces/SoundMap";
+import {Howl, Howler} from "howler";
 
 export default class FiskGame {
 	height: number;
@@ -13,7 +17,13 @@ export default class FiskGame {
 	customCollision: (a: GameEntity, b: GameEntity) => any | null;
 	currentStage: GameStage;
     logicLoop: number;
-	
+	imagesLoaded: number = 0;
+	totalImages: number = 0;
+	images: ImageMap;
+	soundsLoaded: number = 0;
+	totalSounds: number = 0;
+	sounds: SoundMap;
+
 	constuctor({ 
 		height, 
 		width, 
@@ -33,10 +43,50 @@ export default class FiskGame {
 		this.bindScreenResize();
 		this.setImageSmoothing(imageSmoothing);
 		this.customCollision = customCollision;
+		this.totalImages = images.length;
 		this.currentStage = initialStage;
-		this.render();
-		this.logicLoop = window.setInterval(this.logic.bind(this), 33);
-		this.bindClick();
+
+		this.preloadImages(images, () => {
+            this.preloadSounds(sounds, () => {
+				this.render();
+				this.logicLoop = window.setInterval(this.logic.bind(this), 33);
+				this.bindClick();
+            });
+        });
+	}
+	
+	preloadImages(arr: string[], callback: () => void) {
+        function last(game: FiskGame, passedCallback: () => void) {
+            game.imagesLoaded += 1;
+            if(game.imagesLoaded === game.totalImages) {
+                passedCallback();
+            }
+        }
+
+        arr.forEach(url => {
+            let image = new Image();
+            image.onload = () => {
+                this.images[url] = image;
+                last(this, callback);
+            };
+            image.src = url;
+        });
+	}
+	
+	preloadSounds(arr: SoundConfig[], callback: () => void) {
+        function last(game: FiskGame, passedCallback: () => void) {
+            game.soundsLoaded += 1;
+            if(game.soundsLoaded === game.totalSounds) {
+                passedCallback();
+            }
+        }
+
+        arr.forEach(options => {
+            options.onload = () => {
+                last(this, callback);
+            };
+            this.sounds[options.name] = new Howl(options);
+        });
     }
     
     get scale() {
@@ -47,12 +97,13 @@ export default class FiskGame {
     }
 
     updateScale() {
-        const canvasSize = this.canvas.offsetWidth * this.scale;
+		const scale = this.scale;
+        const canvasSize = this.canvas.offsetWidth * scale;
         const diff = window.innerWidth - canvasSize;
         const initTranslateX = ((window.innerWidth - this.canvas.offsetWidth) / 2);
         const initTranslateY = ((window.innerHeight - this.canvas.offsetHeight) / 2);
         this.canvas.style.transformOrigin = '50% 50%';
-        this.canvas.style.transform = `translateX(${initTranslateX}px) translateY(${initTranslateY}px) scale(${scaleToFit})`;
+        this.canvas.style.transform = `translateX(${initTranslateX}px) translateY(${initTranslateY}px) scale(${scale})`;
 	}
 	
 	bindScreenResize() {
