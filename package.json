@@ -5,7 +5,10 @@
   "main": "index.ts",
   "scripts": {
     "build": "webpack --mode=production",
-    "build:dev": "webpack --mode=development"
+    "build:dev": "webpack --mode=development",
+    "prepublishOnly": "npm run build",
+    "version" : "git add -A ./",
+    "postversion" : "git push && git push --tags"
   },
   "author": "Craig Fisk <fisk.craig@gmail.com>",
   "license": "MIT",
@@ -18,5 +21,6 @@
     "typescript": "^3.7.2",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
-  }
+  },
+  "keywords": ["Game", "Engine", "HTML5", "Canvas", "Web", "Typescript"]
 }
