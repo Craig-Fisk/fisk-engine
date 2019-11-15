@@ -40,6 +40,8 @@ export default class GameStage implements iGameStage {
     
     populateEntities(entities: GameEntity[]) {
         entities.forEach(entity => {
+            this.entities.push(entity);
+
             const interactable = entity as Interactable;
             if(interactable.interactive) {
                 this.interactors.push(interactable);
