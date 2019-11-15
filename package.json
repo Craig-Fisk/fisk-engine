@@ -9,9 +9,11 @@
   },
   "author": "Craig Fisk <fisk.craig@gmail.com>",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
     "@types/howler": "^2.1.1",
-    "howler": "^2.1.2",
+    "howler": "^2.1.2"
+  },
+  "devDependencies": {
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.2",
     "webpack": "^4.41.2",

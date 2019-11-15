@@ -25,7 +25,7 @@ export default class FiskGame {
 	sounds: SoundMap;
 	soundNames: string[];
 
-	constuctor({ 
+	constructor({ 
 		height, 
 		width, 
 		images = [], 
@@ -68,16 +68,20 @@ export default class FiskGame {
             if(game.imagesLoaded === game.totalImages) {
                 passedCallback();
             }
-        }
-
-        arr.forEach(url => {
-            let image = new Image();
-            image.onload = () => {
-                this.images[url] = image;
-                last(this, callback);
-            };
-            image.src = url;
-        });
+		}
+		
+		if(arr.length > 0) {
+			arr.forEach(url => {
+				let image = new Image();
+				image.onload = () => {
+					this.images[url] = image;
+					last(this, callback);
+				};
+				image.src = url;
+			});
+		} else {
+			callback();
+		}
 	}
 	
 	preloadSounds(arr: SoundConfig[], callback: () => void) {
@@ -86,15 +90,19 @@ export default class FiskGame {
             if(game.soundsLoaded === game.totalSounds) {
                 passedCallback();
             }
-        }
-
-        arr.forEach(options => {
-            options.onload = () => {
-                last(this, callback);
-            };
-			this.sounds[options.name] = new Howl(options);
-			this.soundNames.push(options.name);
-        });
+		}
+		
+		if(arr.length > 0) {
+			arr.forEach(options => {
+				options.onload = () => {
+					last(this, callback);
+				};
+				this.sounds[options.name] = new Howl(options);
+				this.soundNames.push(options.name);
+			});
+		} else {
+			callback();
+		}
     }
     
     get scale() {

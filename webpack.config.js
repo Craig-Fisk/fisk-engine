@@ -1,7 +1,7 @@
 const path = require('path');
 
 const config = {
-  entry: './index.ts',
+  entry: './example/example.ts',
   module: {
     rules: [
       {
@@ -15,8 +15,8 @@ const config = {
     extensions: [ '.tsx', '.ts', '.js' ],
   },
   output: {
-    filename: 'fisk-engine.js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: 'example.js',
+    path: path.resolve(__dirname, 'example'),
   },
 };
 

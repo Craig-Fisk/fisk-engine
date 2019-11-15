@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Example Game</title>
+  <meta name="viewport" content="initial-scale=1, width=device-width, height=device-height, viewport-fit=cover">
+  <style>
+    * {
+        overflow: hidden;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        overscroll-behavior: none;
+    }
+    
+    html, body {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        overflow: hidden;
+    }
+    
+    body{
+        position: relative;
+    }
+    
+    canvas {
+        background: #FFF;
+        transform-origin: 0 0;
+        width: 1280px;
+        height: 720px;
+        margin: 0;
+        display: block;
+    }
+
+    .container {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+    }
+  </style>
+
+<script src="example.js" type="module"></script>
+
+  <script>
+      function onLoad() {
+        window.startGame();
+      }
+  </script>
+
+</head>
+<body scroll="no" onload="onLoad()">
+    <div class="container">
+        
+    </div>
+</body>
+</html>

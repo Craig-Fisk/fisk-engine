@@ -1,4 +1,4 @@
 export default interface Renderable {
-    renderable: true;
+    renderable: boolean;
 	render: (ctx: CanvasRenderingContext2D) => void;
 }

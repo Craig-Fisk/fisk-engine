@@ -1,6 +1,6 @@
 import FiskGame from "../index";
 
 export default interface Logical {
-	logical: true;
+	logical: boolean;
 	logic: (game: FiskGame) => void;
 }
