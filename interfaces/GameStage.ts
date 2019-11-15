@@ -5,11 +5,14 @@ import Renderable from "./Renderable";
 import Interactable from "./Interactable";
 import FiskGame from "../index";
 import GameEntity from "./GameEntity";
+import Collidable from "./Collidable";
 
-export default interface GameStage {
+export default interface iGameStage {
 	logicQueue: Logical[];
 	renderQueue: Renderable[];
-	interactors: Interactable[];
-	onClickQueue: ((game:FiskGame) => void)[];
+	onClickQueue: ((event: MouseEvent, game: FiskGame) => void)[];
+	onTouchQueue: ((event: TouchEvent, game: FiskGame) => void)[];
 	entities: GameEntity[];
+	collisionQueue: Collidable[];
+	interactors: Interactable[];
 }

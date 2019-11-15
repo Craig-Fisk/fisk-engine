@@ -1,6 +1,6 @@
 import GameEntity from "./interfaces/GameEntity";
-import GameStage from "./interfaces/GameStage";
-import GameConfig from "./interfaces/GameConfig";
+import iGameStage from "./interfaces/GameStage";
+import GameConfig from "./configs/GameConfig";
 import Interactable from "./interfaces/Interactable";
 import SoundConfig from "./interfaces/SoundConfig";
 import ImageMap from "./interfaces/ImageMap";
@@ -15,7 +15,7 @@ export default class FiskGame {
     ctx: CanvasRenderingContext2D;
 	player: any;
 	customCollision: (a: GameEntity, b: GameEntity) => any | null;
-	currentStage: GameStage;
+	currentStage: iGameStage;
     logicLoop: number;
 	imagesLoaded: number = 0;
 	totalImages: number = 0;
@@ -24,6 +24,7 @@ export default class FiskGame {
 	totalSounds: number = 0;
 	sounds: SoundMap;
 	soundNames: string[];
+	currentKeys: string[];
 
 	constructor({ 
 		height, 
@@ -52,9 +53,28 @@ export default class FiskGame {
 				this.render();
 				this.logicLoop = window.setInterval(this.logic.bind(this), 33);
 				this.bindClick();
+				this.setupKeyboardBinding();
             });
         });
 	}
+
+	setupKeyboardBinding() {
+		this.currentKeys = [];
+
+        document.addEventListener('keydown', event => {
+            const index = this.currentKeys.indexOf(event.key);
+            if(index < 0) {
+                this.currentKeys.push(event.key);
+            }
+        }, false);
+
+        document.addEventListener('keyup', event => {
+            const index = this.currentKeys.indexOf(event.key);
+            if(index >= 0) {
+                this.currentKeys.splice(index, 1);
+            }
+        }, false);
+    }
 
 	stopAllSounds() {
         this.soundNames.forEach(name => {
@@ -153,14 +173,14 @@ export default class FiskGame {
 
 		let clicked:Interactable;
 		this.currentStage.interactors.forEach(element => {
-			if(this.simpleCollisionCheck(click as GameEntity, element)) {
+			if(this.simpleCollisionCheck(click as GameEntity, element as Interactable)) {
 				clicked = element;
 			}
 		});
         
         if(!clicked){
 			this.currentStage.onClickQueue.forEach(func => {
-				func(this);
+				func(event, this);
 			});
         }else{
             clicked.onClick(event, this);
@@ -179,8 +199,8 @@ export default class FiskGame {
 		});
 
 		if(!touched){
-			this.currentStage.onClickQueue.forEach(func => {
-				func(this);
+			this.currentStage.onTouchQueue.forEach(func => {
+				func(event, this);
 			});
         }else{
             touched.onTouch(event, this);

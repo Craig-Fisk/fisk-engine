@@ -1,17 +1,9 @@
-import GameStage from "../interfaces/GameStage";
 import Logical from "../interfaces/Logical";
 import Renderable from "../interfaces/Renderable";
 import FiskGame from "..";
+import GameStage from "../classes/GameStage";
 
 function startGame() {
-    const myStage: GameStage = {
-        entities: [],
-        logicQueue: [],
-        renderQueue: [],
-        onClickQueue: [],
-        interactors: []
-    };
-
     class Player implements Logical, Renderable {
         constructor() {}
         x = 200;
@@ -29,9 +21,7 @@ function startGame() {
 
     const myPlayer = new Player();
 
-    myStage.entities.push(myPlayer);
-    myStage.logicQueue.push(myPlayer);
-    myStage.renderQueue.push(myPlayer);
+    const myStage = new GameStage({entities: [myPlayer]});
 
     const myGame = new FiskGame({
         width: 1280,
