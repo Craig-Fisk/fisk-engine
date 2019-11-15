@@ -58,20 +58,46 @@ export default class FiskGame {
         });
 	}
 
+	onKeydown(event: KeyboardEvent) {
+		this.currentStage.interactors.forEach(entity => {
+			if(entity.onKeydown) {
+				entity.onKeydown(event, this);
+			}
+		})
+
+		this.currentStage.onKeydownQueue.forEach(func => {
+			func(event, this);
+		});
+	}
+
+	onKeyup(event: KeyboardEvent) {
+		this.currentStage.interactors.forEach(entity => {
+			if(entity.onKeyup) {
+				entity.onKeyup(event, this);
+			}
+		})
+
+		this.currentStage.onKeyupQueue.forEach(func => {
+			func(event, this);
+		});
+	}
+
 	setupKeyboardBinding() {
 		this.currentKeys = [];
 
         document.addEventListener('keydown', event => {
             const index = this.currentKeys.indexOf(event.key);
             if(index < 0) {
-                this.currentKeys.push(event.key);
+				this.currentKeys.push(event.key);
+				this.onKeydown(event);
             }
         }, false);
 
         document.addEventListener('keyup', event => {
             const index = this.currentKeys.indexOf(event.key);
             if(index >= 0) {
-                this.currentKeys.splice(index, 1);
+				this.currentKeys.splice(index, 1);
+				this.onKeyup(event);
             }
         }, false);
     }
@@ -183,7 +209,9 @@ export default class FiskGame {
 				func(event, this);
 			});
         }else{
-            clicked.onClick(event, this);
+			if(clicked.onClick) {
+				clicked.onClick(event, this);
+			}
         }
 	}
 	
@@ -203,7 +231,9 @@ export default class FiskGame {
 				func(event, this);
 			});
         }else{
-            touched.onTouch(event, this);
+			if(touched.onTouch) {
+				touched.onTouch(event, this);
+			}
         }
 	}
 	
