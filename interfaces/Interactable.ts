@@ -1,5 +1,5 @@
 import GameEntity from "./GameEntity";
-import FiskGame from "../index";
+import FiskGame from "../classes/Game";
 
 export default interface Interactable extends GameEntity {
 	interactive: boolean;

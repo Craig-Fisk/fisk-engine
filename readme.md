@@ -11,7 +11,7 @@ Fisk-Engine is a Typescript based HTML5 game engine designed to work in all mode
 For a full example of the usage see the example folder for a fully working browser game that uses the keyboard arrows keys as inputs.
 
 ```Typescript
-import FiskGame from "fisk-engine";
+import {FiskGame, GameStage} from "fisk-engine";
 
 const myStage = new GameStage({entities: [...]});
 

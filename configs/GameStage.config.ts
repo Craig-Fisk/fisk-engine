@@ -1,5 +1,5 @@
 import GameEntity from "../interfaces/GameEntity";
-import FiskGame from "..";
+import FiskGame from "../classes/Game";
 
 export default interface GameStageConfig {
     entities: GameEntity[];

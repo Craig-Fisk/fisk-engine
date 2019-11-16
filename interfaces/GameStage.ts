@@ -1,11 +1,10 @@
 import Logical from "./Logical";
 
 import Renderable from "./Renderable";
-
 import Interactable from "./Interactable";
-import FiskGame from "../index";
 import GameEntity from "./GameEntity";
 import Collidable from "./Collidable";
+import FiskGame from "../classes/Game";
 
 export default interface iGameStage {
 	logicQueue: Logical[];

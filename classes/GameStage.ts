@@ -6,11 +6,10 @@ import Renderable from "../interfaces/Renderable";
 
 import Interactable from "../interfaces/Interactable";
 
-import FiskGame from "..";
-
 import GameEntity from "../interfaces/GameEntity";
 import GameStageConfig from "../configs/GameStage.config";
 import Collidable from "../interfaces/Collidable";
+import FiskGame from "./Game";
 
 export default class GameStage implements iGameStage {
 	logicQueue: Logical[];
