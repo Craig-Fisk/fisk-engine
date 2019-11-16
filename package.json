@@ -1,14 +1,14 @@
 {
   "name": "fisk-engine",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Typescript based HTML5 game engine",
   "main": "index.ts",
   "scripts": {
     "build": "webpack --mode=production",
     "build:dev": "webpack --mode=development",
     "prepublishOnly": "npm run build",
-    "version" : "git add -A ./",
-    "postversion" : "git push && git push --tags"
+    "version": "git add -A ./",
+    "postversion": "git push && git push --tags"
   },
   "author": "Craig Fisk <fisk.craig@gmail.com>",
   "license": "MIT",
@@ -22,5 +22,12 @@
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
   },
-  "keywords": ["Game", "Engine", "HTML5", "Canvas", "Web", "Typescript"]
+  "keywords": [
+    "Game",
+    "Engine",
+    "HTML5",
+    "Canvas",
+    "Web",
+    "Typescript"
+  ]
 }
