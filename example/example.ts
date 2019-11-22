@@ -16,6 +16,7 @@ function startGame() {
         canJump = true;
         logical = true;
         interactive = true;
+        renderable = true;
         onKeydown = (event: KeyboardEvent) => {
             switch(event.key){
             case 'ArrowLeft':
@@ -42,17 +43,19 @@ function startGame() {
                 break;
             }
         }
+
         logic = (game:FiskGame) => {
             this.gravity = this.gravity > 10 ? 10 : this.gravity + 2
             this.x += this.speed;
             this.y += this.gravity;
             this.collisionCheck(game);
         }
-        renderable = true;
+
         render = (ctx: CanvasRenderingContext2D) => {
             ctx.fillStyle = 'purple';
             ctx.fillRect(this.x, this.y, this.width, this.height);
         }
+
         collisionCheck = (game: FiskGame) => {
             let collisionObject: Collidable;
 
