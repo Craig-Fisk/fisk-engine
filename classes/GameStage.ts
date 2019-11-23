@@ -34,7 +34,16 @@ export default class GameStage implements iGameStage {
         this.collisionQueue = [];
         this.interactors = [];
 
+        this.setupEntities(this.entities, config.gameReference);
         this.populateEntities(config.entities);
+    }
+
+    setupEntities(entities: GameEntity[], game: FiskGame) {
+        entities.forEach(entity => {
+            if(entity.setup) {
+                entity.setup(game);
+            }
+        })
     }
     
     populateEntities(entities: GameEntity[]) {

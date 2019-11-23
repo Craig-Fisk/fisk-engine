@@ -7,4 +7,5 @@ export default interface GameStageConfig {
     onTouchQueue?: ((event: TouchEvent, game: FiskGame) => void)[];
     onKeydownQueue?: ((event: KeyboardEvent, game: FiskGame) => void)[];
     onKeyupQueue?: ((event: KeyboardEvent, game: FiskGame) => void)[];
+    gameReference: FiskGame;
 }

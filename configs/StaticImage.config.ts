@@ -1,5 +1,5 @@
 export default interface StaticImageConfig {
-    image: HTMLImageElement;
+    image: string;
     x: number;
     y: number;
 }

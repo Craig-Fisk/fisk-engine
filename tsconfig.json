@@ -1,10 +1,10 @@
 {
-    "compilerOptions": {
-      "sourceMap": true,
-      "noImplicitAny": true,
-      "target": "es5",
-      "jsx": "react",
-      "allowJs": true,
-      "allowSyntheticDefaultImports": true
-    }
+  "compilerOptions": {
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "target": "es5",
+    "jsx": "react",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true
   }
+}

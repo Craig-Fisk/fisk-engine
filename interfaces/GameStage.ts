@@ -16,4 +16,5 @@ export default interface iGameStage {
 	entities: GameEntity[];
 	collisionQueue: Collidable[];
 	interactors: Interactable[];
+	setupEntities: (entities: GameEntity[], game: FiskGame) => void;
 }

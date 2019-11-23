@@ -1,5 +1,6 @@
 import Renderable from "../interfaces/Renderable";
 import StaticImageConfig from "../configs/StaticImage.config";
+import { FiskGame } from "..";
 
 export default class StaticImage implements Renderable {
     renderable = true;
@@ -8,13 +9,19 @@ export default class StaticImage implements Renderable {
     width: number;
     height: number;
     image: HTMLImageElement;
+    imageUrl: string
     constructor({image, x, y}: StaticImageConfig){
-        this.image = image;
+        this.imageUrl = image;
         this.x = x;
         this.y = y;
-        this.width = image.width;
-        this.height = image.height;
     }
+    
+    setup(game: FiskGame) {
+        this.image = game.images[this.imageUrl];
+        this.width = this.image.width;
+        this.height = this.image.height;
+    }
+
     render(ctx: CanvasRenderingContext2D) {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     }

@@ -1,3 +1,5 @@
+import FiskGame from "../classes/Game";
+
 export default interface GameEntity {
 	x: number;
 	y: number;
@@ -9,4 +11,5 @@ export default interface GameEntity {
 		width: number,
 		height: number
 	}
+	setup?: (game:FiskGame) => void;
 }
