@@ -33,8 +33,7 @@ export default class FiskGame {
 		sounds = [], 
 		selector, 
 		imageSmoothing = false,
-		customCollision = null,
-		initialStage
+		customCollision = null
 	}: GameConfig) {
 		this.width = width;
 		this.height = height;
@@ -46,14 +45,13 @@ export default class FiskGame {
 		this.setImageSmoothing(imageSmoothing);
 		this.customCollision = customCollision;
 		this.totalImages = images.length;
-		this.currentStage = initialStage;
 
 		this.preloadImages(images, () => {
             this.preloadSounds(sounds, () => {
-				this.render();
-				this.logicLoop = window.setInterval(this.logic.bind(this), 33);
 				this.bindClick();
 				this.setupKeyboardBinding();
+				this.render();
+				this.logicLoop = window.setInterval(this.logic.bind(this), 33);
             });
         });
 	}
@@ -259,9 +257,11 @@ export default class FiskGame {
 	
 	render(): void {
 		this.ctx.clearRect(0, 0, this.width, this.height);
-		this.currentStage.renderQueue.forEach(element => {
-			element.render(this.ctx);
-		});
+		if(this.currentStage) {
+			this.currentStage.renderQueue.forEach(element => {
+				element.render(this.ctx);
+			});
+		}
 		window.requestAnimationFrame(this.render.bind(this));
 	}
 	
@@ -286,9 +286,11 @@ export default class FiskGame {
 	}
 	
 	logic() {
-		this.currentStage.logicQueue.forEach(element => {
-			element.logic(this);
-		});
+		if(this.currentStage) {
+			this.currentStage.logicQueue.forEach(element => {
+				element.logic(this);
+			});
+		}
 	}
 	
 }

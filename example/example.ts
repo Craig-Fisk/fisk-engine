@@ -127,35 +127,39 @@ function startGame() {
         } 
     }
 
-    const myStage = new GameStage({entities: [
-        myPlayer,
-        new Block(0, 200), 
-        new Block(100, 200), 
-        new Block(200, 200), 
-        new Block(300, 200), 
-        new Block(400, 200), 
-        new Block(500, 200), 
-        new Block(600, 200), 
-        new Block(700, 200), 
-        new Block(800, 200), 
-        new Block(900, 200), 
-        new Block(1000, 200), 
-        new Block(1100, 500), 
-        new Block(1000, 500), 
-        new Block(900, 500), 
-        new Block(800, 500), 
-        new Block(500, 500), 
-        new Block(400, 500), 
-        new Block(300, 500), 
-        new Goal(0, 500)
-    ]});
-
     const myGame = new FiskGame({
         width: 1200,
         height: 700,
-        selector: '.container',
-        initialStage: myStage
+        selector: '.container'
     });
+
+    const myStage = new GameStage({
+        entities: [
+            myPlayer,
+            new Block(0, 200), 
+            new Block(100, 200), 
+            new Block(200, 200), 
+            new Block(300, 200), 
+            new Block(400, 200), 
+            new Block(500, 200), 
+            new Block(600, 200), 
+            new Block(700, 200), 
+            new Block(800, 200), 
+            new Block(900, 200), 
+            new Block(1000, 200), 
+            new Block(1100, 500), 
+            new Block(1000, 500), 
+            new Block(900, 500), 
+            new Block(800, 500), 
+            new Block(500, 500), 
+            new Block(400, 500), 
+            new Block(300, 500), 
+            new Goal(0, 500)
+        ], 
+        gameReference: myGame
+    });
+
+    myGame.currentStage = myStage;
 }
 
 const _global = window as any
