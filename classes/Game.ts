@@ -25,6 +25,9 @@ export default class FiskGame {
 	sounds: SoundMap;
 	soundNames: string[];
 	currentKeys: string[];
+	stageData: {
+		[key:string]: {}
+	};
 
 	constructor({ 
 		height, 
@@ -33,7 +36,8 @@ export default class FiskGame {
 		sounds = [], 
 		selector, 
 		imageSmoothing = false,
-		customCollision = null
+		customCollision = null,
+		stageData = [],
 	}: GameConfig) {
 		this.width = width;
 		this.height = height;
@@ -48,6 +52,7 @@ export default class FiskGame {
 
 		this.preloadImages(images, () => {
             this.preloadSounds(sounds, () => {
+				this.preloadData(stageData);
 				this.bindClick();
 				this.setupKeyboardBinding();
 				this.render();
@@ -147,6 +152,15 @@ export default class FiskGame {
 		} else {
 			callback();
 		}
+	}
+	
+	preloadData(arr: string[]) {
+        arr.forEach(async (url) => {
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            this.stageData[url] = data;
+        });
     }
     
     get scale() {
@@ -250,8 +264,6 @@ export default class FiskGame {
 	}
 	
 	setImageSmoothing(smoothing: boolean) {
-		// this.ctx.mozImageSmoothingEnabled = smoothing;
-		// this.ctx.webkitImageSmoothingEnabled = smoothing;
 		this.ctx.imageSmoothingEnabled = smoothing;
 	}
 	

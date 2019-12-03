@@ -8,4 +8,5 @@ export default interface GameConfig {
 	selector: string;
 	imageSmoothing?: boolean;
 	customCollision? : (a: GameEntity, b: GameEntity) => any;
+	stageData?: string[];
 }
