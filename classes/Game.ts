@@ -49,6 +49,7 @@ export default class FiskGame {
 		this.setImageSmoothing(imageSmoothing);
 		this.customCollision = customCollision;
 		this.totalImages = images.length;
+		this.images = {};
 
 		this.preloadImages(images, () => {
             this.preloadSounds(sounds, () => {
