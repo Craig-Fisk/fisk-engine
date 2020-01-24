@@ -1,4 +1,5 @@
 import GameEntity from "../interfaces/GameEntity";
+import FiskGame from "../classes/Game";
 
 export default interface GameConfig {
 	height: number;
@@ -9,4 +10,5 @@ export default interface GameConfig {
 	imageSmoothing?: boolean;
 	customCollision? : (a: GameEntity, b: GameEntity) => any;
 	stageData?: string[];
+	onReady?: (game:FiskGame) => void;
 }

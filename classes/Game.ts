@@ -28,6 +28,7 @@ export default class FiskGame {
 	stageData: {
 		[key:string]: {}
 	};
+	onReady: (game:FiskGame) => void;
 
 	constructor({ 
 		height, 
@@ -38,6 +39,7 @@ export default class FiskGame {
 		imageSmoothing = false,
 		customCollision = null,
 		stageData = [],
+		onReady = () => {},
 	}: GameConfig = {
 		height: 0,
 		width: 0,
@@ -54,6 +56,7 @@ export default class FiskGame {
 		this.customCollision = customCollision;
 		this.totalImages = images.length;
 		this.images = {};
+		this.onReady = onReady;
 
 		this.preloadImages(images, () => {
             this.preloadSounds(sounds, () => {
@@ -62,6 +65,7 @@ export default class FiskGame {
 				this.setupKeyboardBinding();
 				this.render();
 				this.logicLoop = window.setInterval(this.logic.bind(this), 33);
+				this.onReady(this);
             });
         });
 	}
