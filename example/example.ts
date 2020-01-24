@@ -1,8 +1,4 @@
-import Logical from "../interfaces/Logical";
-import Renderable from "../interfaces/Renderable";
-import Collidable from "../interfaces/Collidable";
-import Interactable from "../interfaces/Interactable";
-import { FiskGame, GameStage } from "..";
+import { FiskGame, GameStage, Logical, Renderable, Collidable, Interactable } from "..";
 
 function startGame() {
     class Player implements Logical, Renderable, Interactable {
