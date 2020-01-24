@@ -10,7 +10,11 @@ export default class StaticImage implements Renderable {
     height: number;
     image: HTMLImageElement;
     imageUrl: string
-    constructor({image, x, y}: StaticImageConfig){
+    constructor({image, x, y}: StaticImageConfig = {
+        image: "",
+        x: 0,
+        y: 0
+    }){
         this.imageUrl = image;
         this.x = x;
         this.y = y;

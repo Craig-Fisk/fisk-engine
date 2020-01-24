@@ -38,7 +38,11 @@ export default class FiskGame {
 		imageSmoothing = false,
 		customCollision = null,
 		stageData = [],
-	}: GameConfig) {
+	}: GameConfig = {
+		height: 0,
+		width: 0,
+		selector: ""
+	}) {
 		this.width = width;
 		this.height = height;
 		this.canvas = this.createMainCanvas(selector);

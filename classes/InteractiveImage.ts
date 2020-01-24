@@ -9,7 +9,7 @@ export default class InteractiveImage extends StaticImage implements Interactabl
 	onTouch: (event: TouchEvent, game: FiskGame) => void | undefined;
 	onKeydown: (event: KeyboardEvent, game: FiskGame) => void | undefined;
 	onKeyup: (event: KeyboardEvent, game: FiskGame) => void | undefined;
-    constructor (config: InteractiveImageConfig) {
+    constructor (config: InteractiveImageConfig = {image: "", x: 0, y: 0}) {
         super(config);
         if(config.onClick) {
             this.onClick = config.onClick;

@@ -22,7 +22,10 @@ export default class GameStage implements iGameStage {
     onKeydownQueue: ((event: KeyboardEvent, game: FiskGame) => void)[];
     onKeyupQueue: ((event: KeyboardEvent, game: FiskGame) => void)[];
     
-	constructor(config: GameStageConfig) {
+	constructor(config: GameStageConfig = {
+        entities: [],
+        gameReference: {} as FiskGame
+    }) {
 		this.logicQueue = [];
 		this.renderQueue = [];
 		this.onClickQueue = [];
