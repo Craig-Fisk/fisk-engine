@@ -206,9 +206,11 @@ export default class FiskGame {
 		const canvasBounds = game.canvas.getBoundingClientRect();
 		const x = event.changedTouches[0].pageX - canvasBounds.left;
 		const y = event.changedTouches[0].pageY - canvasBounds.top;
+		const percentWidth = (x - 5) / canvasBounds.width * 100;
+		const percentHeight = (y - 5) / canvasBounds.height * 100;
 		return {
-			x: (x / game.scale) - 5,
-			y: (y / game.scale) - 5,
+			x: game.width * percentWidth / 100,
+			y: game.height * percentHeight / 100,
 			width: 10,
 			height: 10
 		}
