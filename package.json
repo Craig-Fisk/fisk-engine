@@ -33,6 +33,10 @@
     "Typescript"
   ],
   "files": [
-    "dist/**"
+    "index.js",
+    "index.d.ts",
+    "classes/*.d.ts",
+    "configs/*.d.ts",
+    "interfaces/*.d.ts"
   ]
 }

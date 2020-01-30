@@ -1,0 +1,61 @@
+import GameEntity from "../interfaces/GameEntity";
+import iGameStage from "../interfaces/GameStage";
+import ImageMap from "../interfaces/ImageMap";
+import SoundMap from "../interfaces/SoundMap";
+import GameConfig from "../configs/GameConfig";
+import SoundConfig from "../interfaces/SoundConfig";
+export default class FiskGame {
+    height: number;
+    width: number;
+    canvas: HTMLCanvasElement;
+    context: CanvasRenderingContext2D | null;
+    ctx: CanvasRenderingContext2D;
+    player: any;
+    customCollision: (a: GameEntity, b: GameEntity) => any | null;
+    currentStage: iGameStage | undefined;
+    imagesLoaded: number;
+    totalImages: number;
+    images: ImageMap;
+    soundsLoaded: number;
+    totalSounds: number;
+    sounds: SoundMap;
+    soundNames: string[];
+    currentKeys: string[];
+    stageData: {
+        [key: string]: {};
+    };
+    onReady: (game: FiskGame) => void;
+    logicLoop: number | undefined;
+    constructor({ height, width, images, sounds, selector, imageSmoothing, stageData, onReady, customCollision }?: GameConfig);
+    onKeydown(event: KeyboardEvent): void;
+    onKeyup(event: KeyboardEvent): void;
+    setupKeyboardBinding(): void;
+    stopAllSounds(): void;
+    preloadImages(arr: string[], callback: () => void): void;
+    preloadSounds(arr: SoundConfig[], callback: () => void): void;
+    preloadData(arr: string[]): void;
+    get scale(): number;
+    updateScale(): void;
+    bindScreenResize(): void;
+    getClick(event: MouseEvent): {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+    };
+    getTouch(event: TouchEvent, game: FiskGame): {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+    };
+    onClick(event: MouseEvent): void;
+    onTouch(event: TouchEvent): void;
+    bindClick(): void;
+    createMainCanvas(selector: string): HTMLCanvasElement;
+    setImageSmoothing(smoothing: boolean): void;
+    render(): void;
+    collisionCheck(a: GameEntity, b: GameEntity): boolean | any;
+    simpleCollisionCheck(a: GameEntity, b: GameEntity): boolean;
+    logic(): void;
+}

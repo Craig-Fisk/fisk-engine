@@ -10,7 +10,6 @@
     "lib": ["es6", "dom", "ES2015"],
     "strict": true,
     "declaration": true,
-    "declarationDir": "./dist/",
   },
   "include": ["index.ts", "./classes", "./configs", "./interfaces"]
 }
