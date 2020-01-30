@@ -2,7 +2,8 @@
   "name": "fisk-engine",
   "version": "0.9.0",
   "description": "Typescript based HTML5 game engine",
-  "main": "index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "webpack --mode=production",
     "build:dev": "webpack --mode=development",
@@ -13,14 +14,16 @@
   "author": "Craig Fisk <fisk.craig@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@types/howler": "^2.1.1",
     "howler": "^2.1.2"
   },
   "devDependencies": {
-    "ts-loader": "^6.2.1",
-    "typescript": "^3.7.2",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10"
+    "@rollup/plugin-node-resolve": "^7.0.0",
+    "@rollup/plugin-typescript": "^3.0.0",
+    "@types/howler": "^2.1.2",
+    "rollup": "^1.30.1",
+    "rollup-plugin-typescript2": "^0.25.3",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.2"
   },
   "keywords": [
     "Game",
@@ -29,5 +32,8 @@
     "Canvas",
     "Web",
     "Typescript"
+  ],
+  "files": [
+    "./dist/**"
   ]
 }

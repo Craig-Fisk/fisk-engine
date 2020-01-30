@@ -2,3 +2,7 @@ node_modules
 .gitignore
 tsconfig.json
 webpack.config.js
+classes
+configs
+example
+interfaces

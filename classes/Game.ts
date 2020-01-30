@@ -14,21 +14,21 @@ export default class FiskGame {
 	context: CanvasRenderingContext2D | null;
     ctx: CanvasRenderingContext2D;
 	player: any;
-	customCollision: (a: GameEntity, b: GameEntity) => any | null;
-	currentStage: iGameStage;
-    logicLoop: number;
+	customCollision: (a: GameEntity, b: GameEntity) => any | null = () => {};
+	currentStage: iGameStage | undefined;
 	imagesLoaded: number = 0;
 	totalImages: number = 0;
 	images: ImageMap;
 	soundsLoaded: number = 0;
 	totalSounds: number = 0;
-	sounds: SoundMap;
-	soundNames: string[];
-	currentKeys: string[];
+	sounds: SoundMap = {};
+	soundNames: string[] = [];
+	currentKeys: string[] = [];
 	stageData: {
 		[key:string]: {}
-	};
+	} = {};
 	onReady: (game:FiskGame) => void;
+	logicLoop: number | undefined;
 
 	constructor({ 
 		height, 
@@ -37,9 +37,9 @@ export default class FiskGame {
 		sounds = [], 
 		selector, 
 		imageSmoothing = false,
-		customCollision = null,
 		stageData = [],
 		onReady = () => {},
+		customCollision
 	}: GameConfig = {
 		height: 0,
 		width: 0,
@@ -53,7 +53,7 @@ export default class FiskGame {
 		this.updateScale();
 		this.bindScreenResize();
 		this.setImageSmoothing(imageSmoothing);
-		this.customCollision = customCollision;
+		this.customCollision = customCollision ? this.customCollision : () => {};
 		this.totalImages = images.length;
 		this.images = {};
 		this.onReady = onReady;
@@ -71,27 +71,31 @@ export default class FiskGame {
 	}
 
 	onKeydown(event: KeyboardEvent) {
-		this.currentStage.interactors.forEach(entity => {
-			if(entity.onKeydown) {
-				entity.onKeydown(event, this);
-			}
-		})
+		if(this.currentStage) {
+			this.currentStage.interactors.forEach(entity => {
+				if(entity.onKeydown) {
+					entity.onKeydown(event, this);
+				}
+			});
 
-		this.currentStage.onKeydownQueue.forEach(func => {
-			func(event, this);
-		});
+			this.currentStage.onKeydownQueue.forEach(func => {
+				func(event, this);
+			});
+		}
 	}
 
 	onKeyup(event: KeyboardEvent) {
-		this.currentStage.interactors.forEach(entity => {
-			if(entity.onKeyup) {
-				entity.onKeyup(event, this);
-			}
-		})
-
-		this.currentStage.onKeyupQueue.forEach(func => {
-			func(event, this);
-		});
+		if(this.currentStage) {
+			this.currentStage.interactors.forEach(entity => {
+				if(entity.onKeyup) {
+					entity.onKeyup(event, this);
+				}
+			});
+	
+			this.currentStage.onKeyupQueue.forEach(func => {
+				func(event, this);
+			});
+		}
 	}
 
 	setupKeyboardBinding() {
@@ -217,47 +221,51 @@ export default class FiskGame {
 	}
 	
 	onClick(event: MouseEvent) {
-		event.preventDefault();
-		const click =  this.getClick(event);
-
-		let clicked:Interactable;
-		this.currentStage.interactors.forEach(element => {
-			if(this.simpleCollisionCheck(click as GameEntity, element as Interactable)) {
-				clicked = element;
-			}
-		});
-        
-        if(!clicked){
-			this.currentStage.onClickQueue.forEach(func => {
-				func(event, this);
+		if(this.currentStage) {
+			event.preventDefault();
+			const click =  this.getClick(event);
+	
+			let clicked:Interactable | undefined;
+			this.currentStage.interactors.forEach(element => {
+				if(this.simpleCollisionCheck(click as GameEntity, element as Interactable)) {
+					clicked = element;
+				}
 			});
-        }else{
-			if(clicked.onClick) {
-				clicked.onClick(event, this);
+			
+			if(!clicked){
+				this.currentStage.onClickQueue.forEach(func => {
+					func(event, this);
+				});
+			}else{
+				if(clicked.onClick) {
+					clicked.onClick(event, this);
+				}
 			}
-        }
+		}
 	}
 	
 	onTouch(event: TouchEvent) {
-		event.preventDefault();
-		const touch = this.getTouch(event, this);
-
-		let touched: Interactable;
-		this.currentStage.interactors.forEach(element => {
-			if(this.simpleCollisionCheck(touch as GameEntity, element)) {
-				touched = element;
-			}
-		});
-
-		if(!touched){
-			this.currentStage.onTouchQueue.forEach(func => {
-				func(event, this);
+		if(this.currentStage) {
+			event.preventDefault();
+			const touch = this.getTouch(event, this);
+	
+			let touched: Interactable | undefined;
+			this.currentStage.interactors.forEach(element => {
+				if(this.simpleCollisionCheck(touch as GameEntity, element)) {
+					touched = element;
+				}
 			});
-        }else{
-			if(touched.onTouch) {
-				touched.onTouch(event, this);
+	
+			if(!touched){
+				this.currentStage.onTouchQueue.forEach(func => {
+					func(event, this);
+				});
+			}else{
+				if(touched.onTouch) {
+					touched.onTouch(event, this);
+				}
 			}
-        }
+		}
 	}
 	
 	bindClick() {
@@ -267,11 +275,16 @@ export default class FiskGame {
 	
 	createMainCanvas(selector: string) : HTMLCanvasElement {
 		const canvas: HTMLCanvasElement = document.createElement('canvas');
-		const parent: HTMLElement = document.querySelector(selector);
-		canvas.width = this.width;
-		canvas.height = this.height;
-		parent.appendChild(canvas);
-		return canvas;
+		const parent: HTMLElement | null = document.querySelector(selector);
+		if(canvas && parent) {
+			canvas.width = this.width;
+			canvas.height = this.height;
+			parent.appendChild(canvas);
+			return canvas;
+		} else {
+			throw `Selector: "${selector}" doesn't exist in document`;
+		}
+		
 	}
 	
 	setImageSmoothing(smoothing: boolean) {
