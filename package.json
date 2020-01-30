@@ -33,6 +33,6 @@
     "Typescript"
   ],
   "files": [
-    "./dist/**"
+    "dist/**"
   ]
 }
