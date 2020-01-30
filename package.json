@@ -5,8 +5,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "webpack --mode=production",
-    "build:dev": "webpack --mode=development",
+    "build": "npx rollup --config",
     "prepublishOnly": "npm run build",
     "version": "git add -A ./",
     "postversion": "git push && git push --tags"
