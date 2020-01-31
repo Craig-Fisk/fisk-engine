@@ -1,8 +1,4 @@
-(function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('howler')) :
-    typeof define === 'function' && define.amd ? define(['exports', 'howler'], factory) :
-    (global = global || self, factory(global['fisk-engine'] = {}, global.howler));
-}(this, (function (exports, howler) { 'use strict';
+define(['exports', 'howler'], function (exports, howler) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation. All rights reserved.
@@ -388,4 +384,4 @@
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+});

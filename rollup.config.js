@@ -4,7 +4,7 @@ export default {
   input: 'index.ts',
   output: {
     dir: '.',
-    format: 'umd',
+    format: 'amd',
     name: 'fisk-engine',
     globals: {
       howler: 'howler'
