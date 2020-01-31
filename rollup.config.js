@@ -4,7 +4,7 @@ export default {
   input: 'index.ts',
   output: {
     dir: '.',
-    format: 'amd',
+    format: 'esm',
     name: 'fisk-engine',
     globals: {
       howler: 'howler'
@@ -14,7 +14,7 @@ export default {
   plugins: [
     typescript({
       lib: ["es5", "es6", "dom"], 
-      target: "es6"
+      target: "es5"
     })
   ]
 };
