@@ -350,8 +350,15 @@ class StaticImage {
         this.x = x;
         this.y = y;
         this.image = game.images[this.imageUrl];
-        this.width = this.image.width;
-        this.height = this.image.height;
+        this.width = this.image ? this.image.width : 0;
+        this.height = this.image ? this.image.height : 0;
+    }
+    static fromImageOrCanvas(x, y, image, gameRef) {
+        const staticImg = new StaticImage({ image: '', x: x, y: y, game: gameRef });
+        staticImg.image = image;
+        staticImg.width = image.width;
+        staticImg.height = image.height;
+        return staticImg;
     }
     render(ctx) {
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
