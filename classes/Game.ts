@@ -53,7 +53,7 @@ export default class FiskGame {
 		this.updateScale();
 		this.bindScreenResize();
 		this.setImageSmoothing(imageSmoothing);
-		this.customCollision = customCollision ? this.customCollision : () => {};
+		this.customCollision = customCollision ? customCollision : (a: GameEntity, b: GameEntity) => {};
 		this.totalImages = images.length;
 		this.images = {};
 		this.onReady = onReady;
@@ -310,13 +310,15 @@ export default class FiskGame {
 	}
 	
 	simpleCollisionCheck(a: GameEntity, b: GameEntity): boolean {
-		if ((a.x >= b.x && a.x <= b.x + b.width) ||
-			(a.x + a.width >= b.x && a.x + a.width <= b.x + b.width)) {
-				if ((a.y >= b.y && a.y <= b.y + b.height) || 
-						(a.y + a.height >= b.y && a.y + a.height <= b.y + b.height)) {
-							return true;
-				}
-			return false;
+		if(a.width && b.width && a.height && b.height) {
+			if ((a.x >= b.x && a.x <= b.x + b.width) ||
+				(a.x + a.width >= b.x && a.x + a.width <= b.x + b.width)) {
+					if ((a.y >= b.y && a.y <= b.y + b.height) || 
+							(a.y + a.height >= b.y && a.y + a.height <= b.y + b.height)) {
+								return true;
+					}
+				return false;
+			}
 		}
 		return false;
 	}
