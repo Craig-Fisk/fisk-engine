@@ -1,6 +1,6 @@
 {
   "name": "fisk-engine",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "description": "Typescript based HTML5 game engine",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
