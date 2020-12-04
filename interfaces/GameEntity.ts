@@ -7,6 +7,6 @@ export default interface GameEntity {
 	width?: number;
 	height?: number;
 	polygon?: {x: number, y: number}[];
-	hitbox?: Box
+	hitbox?: Box;
 	setup?: (game:FiskGame) => void;
 }

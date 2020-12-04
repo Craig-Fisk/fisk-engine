@@ -60,12 +60,13 @@ export default class FiskGame {
 
 		this.preloadImages(images, () => {
             this.preloadSounds(sounds, () => {
-				this.preloadData(stageData);
-				this.bindClick();
-				this.setupKeyboardBinding();
-				this.render();
-				this.logicLoop = window.setInterval(this.logic.bind(this), 33);
-				this.onReady(this);
+				this.preloadData(stageData, () => {
+					this.bindClick();
+					this.setupKeyboardBinding();
+					this.render();
+					this.logicLoop = window.setInterval(this.logic.bind(this), 33);
+					this.onReady(this);
+				});
             });
         });
 	}
@@ -167,13 +168,18 @@ export default class FiskGame {
 		}
 	}
 	
-	preloadData(arr: string[]) {
+	preloadData(arr: string[], callback: () => void) {
+		let count = 0;
         arr.forEach(async (url) => {
             const response = await fetch(url);
             const data = await response.json();
             
-            this.stageData[url] = data;
-        });
+			this.stageData[url] = data;
+			count += 1;
+			if(count === arr.length) {
+				callback();
+			}
+		});
     }
     
     get scale() {
