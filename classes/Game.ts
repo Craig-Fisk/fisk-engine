@@ -55,6 +55,7 @@ export default class FiskGame {
 		this.setImageSmoothing(imageSmoothing);
 		this.customCollision = customCollision ? customCollision : (a: GameEntity, b: GameEntity) => {};
 		this.totalImages = images.length;
+		this.totalSounds = sounds.length;
 		this.images = {};
 		this.onReady = onReady;
 

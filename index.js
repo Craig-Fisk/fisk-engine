@@ -49,16 +49,18 @@ class FiskGame {
         this.setImageSmoothing(imageSmoothing);
         this.customCollision = customCollision ? customCollision : (a, b) => { };
         this.totalImages = images.length;
+        this.totalSounds = sounds.length;
         this.images = {};
         this.onReady = onReady;
         this.preloadImages(images, () => {
             this.preloadSounds(sounds, () => {
-                this.preloadData(stageData);
-                this.bindClick();
-                this.setupKeyboardBinding();
-                this.render();
-                this.logicLoop = window.setInterval(this.logic.bind(this), 33);
-                this.onReady(this);
+                this.preloadData(stageData, () => {
+                    this.bindClick();
+                    this.setupKeyboardBinding();
+                    this.render();
+                    this.logicLoop = window.setInterval(this.logic.bind(this), 33);
+                    this.onReady(this);
+                });
             });
         });
     }
@@ -149,11 +151,16 @@ class FiskGame {
             callback();
         }
     }
-    preloadData(arr) {
+    preloadData(arr, callback) {
+        let count = 0;
         arr.forEach((url) => __awaiter(this, void 0, void 0, function* () {
             const response = yield fetch(url);
             const data = yield response.json();
             this.stageData[url] = data;
+            count += 1;
+            if (count === arr.length) {
+                callback();
+            }
         }));
     }
     get scale() {
