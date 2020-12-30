@@ -29,6 +29,9 @@ export default class FiskGame {
 	} = {};
 	onReady: (game:FiskGame) => void;
 	logicLoop: number | undefined;
+	audioContext: AudioContext;
+	firstInteract = false;
+
 
 	constructor({ 
 		height, 
@@ -58,6 +61,7 @@ export default class FiskGame {
 		this.totalSounds = sounds.length;
 		this.images = {};
 		this.onReady = onReady;
+		this.audioContext = new AudioContext();
 
 		this.preloadImages(images, () => {
             this.preloadSounds(sounds, () => {
@@ -72,7 +76,15 @@ export default class FiskGame {
         });
 	}
 
+	checkFirstInteract() {
+		if(this.firstInteract === false && this.audioContext.state === 'suspended') {
+			this.firstInteract = true;
+			this.audioContext.resume();
+		}
+	}
+
 	onKeydown(event: KeyboardEvent) {
+		this.checkFirstInteract();
 		if(this.currentStage) {
 			this.currentStage.interactors.forEach(entity => {
 				if(entity.onKeydown) {
@@ -87,6 +99,7 @@ export default class FiskGame {
 	}
 
 	onKeyup(event: KeyboardEvent) {
+		this.checkFirstInteract();
 		if(this.currentStage) {
 			this.currentStage.interactors.forEach(entity => {
 				if(entity.onKeyup) {
@@ -228,6 +241,7 @@ export default class FiskGame {
 	}
 	
 	onClick(event: MouseEvent) {
+		this.checkFirstInteract();
 		if(this.currentStage) {
 			event.preventDefault();
 			const click =  this.getClick(event);
@@ -252,6 +266,7 @@ export default class FiskGame {
 	}
 	
 	onTouch(event: TouchEvent) {
+		this.checkFirstInteract();
 		if(this.currentStage) {
 			event.preventDefault();
 			const touch = this.getTouch(event, this);

@@ -39,6 +39,7 @@ class FiskGame {
         this.soundNames = [];
         this.currentKeys = [];
         this.stageData = {};
+        this.firstInteract = false;
         this.width = width;
         this.height = height;
         this.canvas = this.createMainCanvas(selector);
@@ -52,6 +53,7 @@ class FiskGame {
         this.totalSounds = sounds.length;
         this.images = {};
         this.onReady = onReady;
+        this.audioContext = new AudioContext();
         this.preloadImages(images, () => {
             this.preloadSounds(sounds, () => {
                 this.preloadData(stageData, () => {
@@ -64,7 +66,14 @@ class FiskGame {
             });
         });
     }
+    checkFirstInteract() {
+        if (this.firstInteract === false && this.audioContext.state === 'suspended') {
+            this.firstInteract = true;
+            this.audioContext.resume();
+        }
+    }
     onKeydown(event) {
+        this.checkFirstInteract();
         if (this.currentStage) {
             this.currentStage.interactors.forEach(entity => {
                 if (entity.onKeydown) {
@@ -77,6 +86,7 @@ class FiskGame {
         }
     }
     onKeyup(event) {
+        this.checkFirstInteract();
         if (this.currentStage) {
             this.currentStage.interactors.forEach(entity => {
                 if (entity.onKeyup) {
@@ -202,6 +212,7 @@ class FiskGame {
         };
     }
     onClick(event) {
+        this.checkFirstInteract();
         if (this.currentStage) {
             event.preventDefault();
             const click = this.getClick(event);
@@ -224,6 +235,7 @@ class FiskGame {
         }
     }
     onTouch(event) {
+        this.checkFirstInteract();
         if (this.currentStage) {
             event.preventDefault();
             const touch = this.getTouch(event, this);
