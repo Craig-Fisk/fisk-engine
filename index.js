@@ -257,9 +257,31 @@ class FiskGame {
             }
         }
     }
+    onMouseMove(event) {
+        if (this.currentStage) {
+            event.preventDefault();
+            if (this.currentStage.onMouseMoveQueue.length > 0) {
+                this.currentStage.onMouseMoveQueue.forEach(func => {
+                    func(event, this);
+                });
+            }
+        }
+    }
+    onTouchMove(event) {
+        if (this.currentStage) {
+            event.preventDefault();
+            if (this.currentStage.onTouchMoveQueue.length > 0) {
+                this.currentStage.onTouchMoveQueue.forEach(func => {
+                    func(event, this);
+                });
+            }
+        }
+    }
     bindClick() {
         this.canvas.addEventListener("touchstart", this.onTouch.bind(this));
         this.canvas.addEventListener("mousedown", this.onClick.bind(this));
+        this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
+        this.canvas.addEventListener('touchmove', this.onTouchMove.bind(this));
     }
     createMainCanvas(selector) {
         const canvas = document.createElement('canvas');
@@ -327,6 +349,8 @@ class GameStage {
         this.entities = [];
         this.onClickQueue = config.onClickQueue ? config.onClickQueue : [];
         this.onTouchQueue = config.onTouchQueue ? config.onTouchQueue : [];
+        this.onTouchMoveQueue = config.onTouchMoveQueue ? config.onTouchMoveQueue : [];
+        this.onMouseMoveQueue = config.onMouseMoveQueue ? config.onMouseMoveQueue : [];
         this.onKeydownQueue = config.onKeydownQueue ? config.onKeydownQueue : [];
         this.onKeyupQueue = config.onKeyupQueue ? config.onKeyupQueue : [];
         this.collisionQueue = [];
