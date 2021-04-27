@@ -16,6 +16,8 @@ export default class GameStage implements iGameStage {
 	renderQueue: Renderable[];
     onClickQueue: ((event: MouseEvent, game: FiskGame) => void)[];
     onTouchQueue: ((event: TouchEvent, game: FiskGame) => void)[];
+    onTouchMoveQueue: ((event: TouchEvent, game: FiskGame) => void)[];
+    onMouseMoveQueue: ((event: MouseEvent, game: FiskGame) => void)[];
     entities: GameEntity[];
     collisionQueue: Collidable[];
     interactors: Interactable[];
@@ -32,6 +34,8 @@ export default class GameStage implements iGameStage {
         this.entities = [];
         this.onClickQueue = config.onClickQueue ? config.onClickQueue : [];
         this.onTouchQueue = config.onTouchQueue ? config.onTouchQueue : [];
+        this.onTouchMoveQueue = config.onTouchMoveQueue ? config.onTouchMoveQueue : [];
+        this.onMouseMoveQueue = config.onMouseMoveQueue ? config.onMouseMoveQueue : [];
         this.onKeydownQueue = config.onKeydownQueue ? config.onKeydownQueue : [];
         this.onKeyupQueue = config.onKeyupQueue ? config.onKeyupQueue : [];
         this.collisionQueue = [];

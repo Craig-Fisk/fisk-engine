@@ -289,10 +289,34 @@ export default class FiskGame {
 			}
 		}
 	}
+
+	onMouseMove(event: MouseEvent) {
+		if(this.currentStage) {
+			event.preventDefault();
+			if(this.currentStage.onMouseMoveQueue.length > 0) {
+				this.currentStage.onMouseMoveQueue.forEach(func => {
+					func(event, this);
+				});
+			}
+		}
+	}
+
+	onTouchMove(event: TouchEvent) {
+		if(this.currentStage) {
+			event.preventDefault();
+			if(this.currentStage.onTouchMoveQueue.length > 0) {
+				this.currentStage.onTouchMoveQueue.forEach(func => {
+					func(event, this);
+				});
+			}
+		}
+	}
 	
 	bindClick() {
 		this.canvas.addEventListener("touchstart", this.onTouch.bind(this));
 		this.canvas.addEventListener("mousedown", this.onClick.bind(this));
+		this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
+		this.canvas.addEventListener('touchmove', this.onTouchMove.bind(this));
 	}
 	
 	createMainCanvas(selector: string) : HTMLCanvasElement {
