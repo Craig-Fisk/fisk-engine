@@ -10,6 +10,7 @@ import GameEntity from "../interfaces/GameEntity";
 import GameStageConfig from "../configs/GameStage.config";
 import Collidable from "../interfaces/Collidable";
 import FiskGame from "./Game";
+import { removeFromStage } from "../index";
 
 export default class GameStage implements iGameStage {
 	logicQueue: Logical[];
@@ -77,5 +78,9 @@ export default class GameStage implements iGameStage {
                 this.collisionQueue.push(collidable);
             }
         });
+    }
+
+    removeEntity(entity: GameEntity) {
+        removeFromStage(entity, this);
     }
 }

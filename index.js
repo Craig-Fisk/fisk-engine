@@ -386,6 +386,9 @@ class GameStage {
             }
         });
     }
+    removeEntity(entity) {
+        removeFromStage(entity, this);
+    }
 }
 
 class StaticImage {
@@ -429,4 +432,79 @@ class InteractiveImage extends StaticImage {
     }
 }
 
-export { FiskGame, GameStage, InteractiveImage, StaticImage };
+function isEngine(entity) {
+    return entity.currentStage !== undefined;
+}
+function removeFromStage(entity, gameStage) {
+    const stage = isEngine(gameStage) ? gameStage.currentStage : gameStage;
+    const entityIndex = stage.entities.indexOf(entity);
+    const logicIndex = stage.logicQueue.indexOf(entity);
+    const renderIndex = stage.renderQueue.indexOf(entity);
+    const collisionIndex = stage.collisionQueue.indexOf(entity);
+    if (entityIndex >= 0) {
+        stage.entities.splice(entityIndex, 1);
+    }
+    if (logicIndex >= 0) {
+        stage.logicQueue.splice(logicIndex, 1);
+    }
+    if (renderIndex >= 0) {
+        stage.renderQueue.splice(renderIndex, 1);
+    }
+    if (collisionIndex >= 0) {
+        stage.collisionQueue.splice(collisionIndex, 1);
+    }
+}
+
+function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    if (result) {
+        return `rgb(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)})`;
+    }
+    else {
+        return null;
+    }
+}
+
+function rgbToRgba(rgb, alpha) {
+    const index = rgb.indexOf("rgba") >= 0 ? 5 : 4;
+    const split = rgb.split(",");
+    if (index === 4) {
+        return `rgba(${split[0].substring(index)}, ${split[1].trim()}, ${split[2]
+            .trim()
+            .substring(0, split[2].trim().indexOf(")"))}, ${alpha})`;
+    }
+    else {
+        return `rgba(${split[0].substring(index)}, ${split[1].trim()}, ${split[2].trim()}, ${alpha})`;
+    }
+}
+
+function randomNumberBetween(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function countDecimals(value) {
+    let text = value.toString();
+    // verify if number 0.000005 is represented as "5e-6"
+    if (text.indexOf("e-") > -1) {
+        let [base, trail] = text.split("e-");
+        let deg = parseInt(trail, 10);
+        return deg;
+    }
+    // count decimals for number in representation like "0.123456"
+    if (Math.floor(value) !== value) {
+        return value.toString().split(".")[1].length || 0;
+    }
+    return 0;
+}
+function randomDecimalBetween(min, max) {
+    const minDec = countDecimals(min);
+    const maxDec = countDecimals(max);
+    const decimalPlaces = Math.max(minDec, maxDec);
+    const rand = Math.random() * (max - min) + min;
+    const power = Math.pow(10, decimalPlaces);
+    return Math.floor(rand * power) / power;
+}
+
+export { FiskGame, GameStage, InteractiveImage, StaticImage, hexToRgb, randomDecimalBetween, randomNumberBetween, removeFromStage, rgbToRgba };
