@@ -184,16 +184,20 @@ export default class FiskGame {
 	
 	preloadData(arr: string[], callback: () => void) {
 		let count = 0;
-        arr.forEach(async (url) => {
-            const response = await fetch(url);
-            const data = await response.json();
-            
-			this.stageData[url] = data;
-			count += 1;
-			if(count === arr.length) {
-				callback();
-			}
-		});
+		if(arr.length > 0) {
+			arr.forEach(async (url) => {
+				const response = await fetch(url);
+				const data = await response.json();
+				
+				this.stageData[url] = data;
+				count += 1;
+				if(count === arr.length) {
+					callback();
+				}
+			});
+		} else {
+			callback();
+		}
     }
     
     get scale() {
