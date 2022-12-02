@@ -1,6 +1,5 @@
 import Renderable from "../interfaces/Renderable";
 import StaticImageConfig from "../configs/StaticImage.config";
-import { FiskGame } from "../index";
 
 export default class StaticImage implements Renderable {
     renderable = true;
@@ -9,25 +8,25 @@ export default class StaticImage implements Renderable {
     width: number;
     height: number;
     image: HTMLImageElement | HTMLCanvasElement;
-    imageUrl: string
-    constructor({image, x, y, game}: StaticImageConfig){
-        this.imageUrl = image;
+    imageUrl: string;
+    startX?: number;
+    startY?: number;
+    constructor({image, x, y, startX, startY, width, height}: StaticImageConfig){
+        this.imageUrl = image instanceof HTMLImageElement ? image.src : 'canvas';
         this.x = x;
         this.y = y;
-        this.image = game.images[this.imageUrl];
-        this.width = this.image ? this.image.width : 0;
-        this.height = this.image ? this.image.height : 0;
-    }
-
-    static fromImageOrCanvas(x: number, y: number, image: HTMLImageElement | HTMLCanvasElement, gameRef: FiskGame) {
-        const staticImg = new StaticImage({image: '', x: x, y: y, game: gameRef});
-        staticImg.image = image;
-        staticImg.width = image.width;
-        staticImg.height = image.height;
-        return staticImg;
+        this.image = image;
+        this.width = width ? width : this.image.width;
+        this.height = height ? height : this.image.height;
+        this.startX = startX;
+        this.startY = startY;
     }
 
     render(ctx: CanvasRenderingContext2D) {
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        if(this.startX && this.startY) {
+            ctx.drawImage(this.image, this.startX, this.startY, this.width, this.height, this.x, this.y, this.width, this.height);
+        } else {
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        }
     }
 }

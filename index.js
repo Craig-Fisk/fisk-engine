@@ -163,15 +163,20 @@ class FiskGame {
     }
     preloadData(arr, callback) {
         let count = 0;
-        arr.forEach((url) => __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(url);
-            const data = yield response.json();
-            this.stageData[url] = data;
-            count += 1;
-            if (count === arr.length) {
-                callback();
-            }
-        }));
+        if (arr.length > 0) {
+            arr.forEach((url) => __awaiter(this, void 0, void 0, function* () {
+                const response = yield fetch(url);
+                const data = yield response.json();
+                this.stageData[url] = data;
+                count += 1;
+                if (count === arr.length) {
+                    callback();
+                }
+            }));
+        }
+        else {
+            callback();
+        }
     }
     get scale() {
         const scaleX = window.innerWidth / this.canvas.offsetWidth;
@@ -392,24 +397,24 @@ class GameStage {
 }
 
 class StaticImage {
-    constructor({ image, x, y, game }) {
+    constructor({ image, x, y, startX, startY, width, height }) {
         this.renderable = true;
-        this.imageUrl = image;
+        this.imageUrl = image instanceof HTMLImageElement ? image.src : 'canvas';
         this.x = x;
         this.y = y;
-        this.image = game.images[this.imageUrl];
-        this.width = this.image ? this.image.width : 0;
-        this.height = this.image ? this.image.height : 0;
-    }
-    static fromImageOrCanvas(x, y, image, gameRef) {
-        const staticImg = new StaticImage({ image: '', x: x, y: y, game: gameRef });
-        staticImg.image = image;
-        staticImg.width = image.width;
-        staticImg.height = image.height;
-        return staticImg;
+        this.image = image;
+        this.width = width ? width : this.image.width;
+        this.height = height ? height : this.image.height;
+        this.startX = startX;
+        this.startY = startY;
     }
     render(ctx) {
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        if (this.startX && this.startY) {
+            ctx.drawImage(this.image, this.startX, this.startY, this.width, this.height, this.x, this.y, this.width, this.height);
+        }
+        else {
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        }
     }
 }
 

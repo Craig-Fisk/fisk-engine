@@ -1,8 +1,11 @@
 import { FiskGame } from "../index";
 
 export default interface StaticImageConfig {
-    image: string;
+    image: HTMLImageElement | HTMLCanvasElement;
     x: number;
     y: number;
-    game: FiskGame;
+    startX?: number;
+    startY?: number;
+    width?: number;
+    height?: number;
 }
