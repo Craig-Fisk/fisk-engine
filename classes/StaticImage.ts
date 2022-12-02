@@ -23,7 +23,7 @@ export default class StaticImage implements Renderable {
     }
 
     render(ctx: CanvasRenderingContext2D) {
-        if(this.startX && this.startY) {
+        if(this.startX !== undefined && this.startY !== undefined ) {
             ctx.drawImage(this.image, this.startX, this.startY, this.width, this.height, this.x, this.y, this.width, this.height);
         } else {
             ctx.drawImage(this.image, this.x, this.y, this.width, this.height);

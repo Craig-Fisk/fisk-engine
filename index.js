@@ -409,7 +409,7 @@ class StaticImage {
         this.startY = startY;
     }
     render(ctx) {
-        if (this.startX && this.startY) {
+        if (this.startX !== undefined && this.startY !== undefined) {
             ctx.drawImage(this.image, this.startX, this.startY, this.width, this.height, this.x, this.y, this.width, this.height);
         }
         else {
