@@ -315,9 +315,21 @@ export default class FiskGame {
 			}
 		}
 	}
+
+	onTouchEnd(event: TouchEvent) {
+		if(this.currentStage) {
+			event.preventDefault();
+			if(this.currentStage.onTouchEndQueue.length > 0) {
+				this.currentStage.onTouchEndQueue.forEach(func => {
+					func(event, this);
+				});
+			}
+		}
+	}
 	
 	bindClick() {
 		this.canvas.addEventListener("touchstart", this.onTouch.bind(this));
+		this.canvas.addEventListener("touchend", this.onTouchEnd.bind(this));
 		this.canvas.addEventListener("mousedown", this.onClick.bind(this));
 		this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
 		this.canvas.addEventListener('touchmove', this.onTouchMove.bind(this));

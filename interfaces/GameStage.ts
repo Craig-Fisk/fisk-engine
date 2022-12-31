@@ -11,6 +11,7 @@ export default interface iGameStage {
 	renderQueue: Renderable[];
 	onClickQueue: ((event: MouseEvent, game: FiskGame) => void)[];
 	onTouchQueue: ((event: TouchEvent, game: FiskGame) => void)[];
+	onTouchEndQueue: ((event: TouchEvent, game: FiskGame) => void)[];
 	onKeydownQueue: ((event: KeyboardEvent, game: FiskGame) => void)[];
 	onKeyupQueue: ((event: KeyboardEvent, game: FiskGame) => void)[];
 	onTouchMoveQueue: ((event: TouchEvent, game: FiskGame) => void)[];
