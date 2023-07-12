@@ -13,76 +13,88 @@ import FiskGame from "./Game";
 import { removeFromStage } from "../index";
 
 export default class GameStage implements iGameStage {
-	logicQueue: Logical[];
-	renderQueue: Renderable[];
-    onClickQueue: ((event: MouseEvent, game: FiskGame) => void)[];
-    onTouchQueue: ((event: TouchEvent, game: FiskGame) => void)[];
-    onTouchMoveQueue: ((event: TouchEvent, game: FiskGame) => void)[];
-    onTouchEndQueue: ((event: TouchEvent, game: FiskGame) => void)[];
-    onMouseMoveQueue: ((event: MouseEvent, game: FiskGame) => void)[];
-    entities: GameEntity[];
-    collisionQueue: Collidable[];
-    interactors: Interactable[];
-    onKeydownQueue: ((event: KeyboardEvent, game: FiskGame) => void)[];
-    onKeyupQueue: ((event: KeyboardEvent, game: FiskGame) => void)[];
-    
-	constructor(config: GameStageConfig = {
-        entities: [],
-        gameReference: {} as FiskGame
-    }) {
-		this.logicQueue = [];
-		this.renderQueue = [];
-		this.onClickQueue = [];
-        this.entities = [];
-        this.onClickQueue = config.onClickQueue ? config.onClickQueue : [];
-        this.onTouchQueue = config.onTouchQueue ? config.onTouchQueue : [];
-        this.onTouchMoveQueue = config.onTouchMoveQueue ? config.onTouchMoveQueue : [];
-        this.onTouchEndQueue = config.onTouchEndQueue ? config.onTouchEndQueue : [];
-        this.onMouseMoveQueue = config.onMouseMoveQueue ? config.onMouseMoveQueue : [];
-        this.onKeydownQueue = config.onKeydownQueue ? config.onKeydownQueue : [];
-        this.onKeyupQueue = config.onKeyupQueue ? config.onKeyupQueue : [];
-        this.collisionQueue = [];
-        this.interactors = [];
+  logicQueue: Logical[];
+  renderQueue: Renderable[];
+  onClickQueue: ((event: MouseEvent, game: FiskGame) => void)[];
+  onTouchQueue: ((event: TouchEvent, game: FiskGame) => void)[];
+  onTouchMoveQueue: ((event: TouchEvent, game: FiskGame) => void)[];
+  onTouchEndQueue: ((event: TouchEvent, game: FiskGame) => void)[];
+  onMouseMoveQueue: ((event: MouseEvent, game: FiskGame) => void)[];
+  onMouseUpQueue: ((event: MouseEvent, game: FiskGame) => void)[];
+  onMouseDownQueue: ((event: MouseEvent, game: FiskGame) => void)[];
+  entities: GameEntity[];
+  collisionQueue: Collidable[];
+  interactors: Interactable[];
+  onKeydownQueue: ((event: KeyboardEvent, game: FiskGame) => void)[];
+  onKeyupQueue: ((event: KeyboardEvent, game: FiskGame) => void)[];
 
-        this.setupEntities(this.entities, config.gameReference);
-        this.populateEntities(config.entities);
+  constructor(
+    config: GameStageConfig = {
+      entities: [],
+      gameReference: {} as FiskGame,
     }
+  ) {
+    this.logicQueue = [];
+    this.renderQueue = [];
+    this.onClickQueue = [];
+    this.entities = [];
+    this.onClickQueue = config.onClickQueue ? config.onClickQueue : [];
+    this.onTouchQueue = config.onTouchQueue ? config.onTouchQueue : [];
+    this.onTouchMoveQueue = config.onTouchMoveQueue
+      ? config.onTouchMoveQueue
+      : [];
+    this.onTouchEndQueue = config.onTouchEndQueue ? config.onTouchEndQueue : [];
+    this.onMouseMoveQueue = config.onMouseMoveQueue
+      ? config.onMouseMoveQueue
+      : [];
+    this.onMouseUpQueue = config.onMouseUpQueue ? config.onMouseUpQueue : [];
+    this.onMouseDownQueue = config.onMouseDownQueue
+      ? config.onMouseDownQueue
+      : [];
+    this.onKeydownQueue = config.onKeydownQueue ? config.onKeydownQueue : [];
+    this.onKeyupQueue = config.onKeyupQueue ? config.onKeyupQueue : [];
+    this.collisionQueue = [];
+    this.interactors = [];
 
-    setupEntities(entities: GameEntity[], game: FiskGame) {
-        entities.forEach(entity => {
-            if(entity.setup) {
-                entity.setup(game);
-            }
-        })
-    }
-    
-    populateEntities(entities: GameEntity[]) {
-        entities.forEach(entity => {
-            this.entities.push(entity);
+    this.setupEntities(this.entities, config.gameReference);
+    this.populateEntities(config.entities);
+  }
 
-            const interactable = entity as Interactable;
-            if(interactable.interactive) {
-                this.interactors.push(interactable);
-            }
+  setupEntities(entities: GameEntity[], game: FiskGame) {
+    entities.forEach((entity) => {
+      if (entity.setup) {
+        entity.setup(game);
+      }
+    });
+  }
 
-            const logical = entity as Logical;
-            if(logical.logical) {
-                this.logicQueue.push(logical);
-            }
+  populateEntities(entities: GameEntity[]) {
+    entities.forEach((entity) => {
+      this.entities.push(entity);
 
-            const renderable = entity as Renderable;
-            if(renderable.renderable) {
-                this.renderQueue.push(renderable);
-            }
+      const interactable = entity as Interactable;
+      if (interactable.interactive) {
+        this.interactors.push(interactable);
+      }
 
-            const collidable = entity as Collidable;
-            if(collidable.collidable) {
-                this.collisionQueue.push(collidable);
-            }
-        });
-    }
+      const logical = entity as Logical;
+      if (logical.logical) {
+        this.logicQueue.push(logical);
+      }
 
-    removeEntity(entity: GameEntity) {
-        removeFromStage(entity, this);
-    }
+      const renderable = entity as Renderable;
+      if (renderable.renderable) {
+        this.renderQueue.push(renderable);
+      }
+
+      const collidable = entity as Collidable;
+      if (collidable.collidable) {
+        this.collisionQueue.push(collidable);
+      }
+    });
+  }
+
+  removeEntity(entity: GameEntity) {
+    removeFromStage(entity, this);
+  }
 }

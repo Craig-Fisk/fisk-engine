@@ -25,10 +25,10 @@ function __awaiter(thisArg, _arguments, P, generator) {
 }
 
 class FiskGame {
-    constructor({ height, width, images = [], sounds = [], selector, imageSmoothing = false, stageData = [], onReady = () => { }, customCollision } = {
+    constructor({ height, width, images = [], sounds = [], selector, imageSmoothing = false, stageData = [], onReady = () => { }, customCollision, } = {
         height: 0,
         width: 0,
-        selector: ""
+        selector: "",
     }) {
         this.customCollision = () => { };
         this.imagesLoaded = 0;
@@ -43,12 +43,14 @@ class FiskGame {
         this.width = width;
         this.height = height;
         this.canvas = this.createMainCanvas(selector);
-        this.context = this.canvas.getContext('2d');
+        this.context = this.canvas.getContext("2d");
         this.ctx = this.context;
         this.updateScale();
         this.bindScreenResize();
         this.setImageSmoothing(imageSmoothing);
-        this.customCollision = customCollision ? customCollision : (a, b) => { };
+        this.customCollision = customCollision
+            ? customCollision
+            : (a, b) => { };
         this.totalImages = images.length;
         this.totalSounds = sounds.length;
         this.images = {};
@@ -67,7 +69,8 @@ class FiskGame {
         });
     }
     checkFirstInteract() {
-        if (this.firstInteract === false && this.audioContext.state === 'suspended') {
+        if (this.firstInteract === false &&
+            this.audioContext.state === "suspended") {
             this.firstInteract = true;
             this.audioContext.resume();
         }
@@ -75,12 +78,12 @@ class FiskGame {
     onKeydown(event) {
         this.checkFirstInteract();
         if (this.currentStage) {
-            this.currentStage.interactors.forEach(entity => {
+            this.currentStage.interactors.forEach((entity) => {
                 if (entity.onKeydown) {
                     entity.onKeydown(event, this);
                 }
             });
-            this.currentStage.onKeydownQueue.forEach(func => {
+            this.currentStage.onKeydownQueue.forEach((func) => {
                 func(event, this);
             });
         }
@@ -88,26 +91,26 @@ class FiskGame {
     onKeyup(event) {
         this.checkFirstInteract();
         if (this.currentStage) {
-            this.currentStage.interactors.forEach(entity => {
+            this.currentStage.interactors.forEach((entity) => {
                 if (entity.onKeyup) {
                     entity.onKeyup(event, this);
                 }
             });
-            this.currentStage.onKeyupQueue.forEach(func => {
+            this.currentStage.onKeyupQueue.forEach((func) => {
                 func(event, this);
             });
         }
     }
     setupKeyboardBinding() {
         this.currentKeys = [];
-        document.addEventListener('keydown', event => {
+        document.addEventListener("keydown", (event) => {
             const index = this.currentKeys.indexOf(event.key);
             if (index < 0) {
                 this.currentKeys.push(event.key);
                 this.onKeydown(event);
             }
         }, false);
-        document.addEventListener('keyup', event => {
+        document.addEventListener("keyup", (event) => {
             const index = this.currentKeys.indexOf(event.key);
             if (index >= 0) {
                 this.currentKeys.splice(index, 1);
@@ -116,7 +119,7 @@ class FiskGame {
         }, false);
     }
     stopAllSounds() {
-        this.soundNames.forEach(name => {
+        this.soundNames.forEach((name) => {
             this.sounds[name].stop();
         });
     }
@@ -128,7 +131,7 @@ class FiskGame {
             }
         }
         if (arr.length > 0) {
-            arr.forEach(url => {
+            arr.forEach((url) => {
                 let image = new Image();
                 image.onload = () => {
                     this.images[url] = image;
@@ -149,7 +152,7 @@ class FiskGame {
             }
         }
         if (arr.length > 0) {
-            arr.forEach(options => {
+            arr.forEach((options) => {
                 options.onload = () => {
                     last(this, callback);
                 };
@@ -187,33 +190,33 @@ class FiskGame {
     updateScale() {
         const scale = this.scale;
         const canvasSize = this.canvas.offsetWidth * scale;
-        const initTranslateX = ((window.innerWidth - this.canvas.offsetWidth) / 2);
-        const initTranslateY = ((window.innerHeight - this.canvas.offsetHeight) / 2);
-        this.canvas.style.transformOrigin = '50% 50%';
+        const initTranslateX = (window.innerWidth - this.canvas.offsetWidth) / 2;
+        const initTranslateY = (window.innerHeight - this.canvas.offsetHeight) / 2;
+        this.canvas.style.transformOrigin = "50% 50%";
         this.canvas.style.transform = `translateX(${initTranslateX}px) translateY(${initTranslateY}px) scale(${scale})`;
     }
     bindScreenResize() {
-        window.addEventListener('resize', this.updateScale.bind(this), false);
+        window.addEventListener("resize", this.updateScale.bind(this), false);
     }
     getClick(event) {
         return {
             x: event.offsetX - 5,
             y: event.offsetY - 5,
             width: 10,
-            height: 10
+            height: 10,
         };
     }
     getTouch(event, game) {
         const canvasBounds = game.canvas.getBoundingClientRect();
         const x = event.changedTouches[0].pageX - canvasBounds.left;
         const y = event.changedTouches[0].pageY - canvasBounds.top;
-        const percentWidth = (x - 5) / canvasBounds.width * 100;
-        const percentHeight = (y - 5) / canvasBounds.height * 100;
+        const percentWidth = ((x - 5) / canvasBounds.width) * 100;
+        const percentHeight = ((y - 5) / canvasBounds.height) * 100;
         return {
-            x: game.width * percentWidth / 100,
-            y: game.height * percentHeight / 100,
+            x: (game.width * percentWidth) / 100,
+            y: (game.height * percentHeight) / 100,
             width: 10,
-            height: 10
+            height: 10,
         };
     }
     onClick(event) {
@@ -222,13 +225,13 @@ class FiskGame {
             event.preventDefault();
             const click = this.getClick(event);
             let clicked;
-            this.currentStage.interactors.forEach(element => {
+            this.currentStage.interactors.forEach((element) => {
                 if (this.simpleCollisionCheck(click, element)) {
                     clicked = element;
                 }
             });
             if (!clicked) {
-                this.currentStage.onClickQueue.forEach(func => {
+                this.currentStage.onClickQueue.forEach((func) => {
                     func(event, this);
                 });
             }
@@ -245,13 +248,13 @@ class FiskGame {
             event.preventDefault();
             const touch = this.getTouch(event, this);
             let touched;
-            this.currentStage.interactors.forEach(element => {
+            this.currentStage.interactors.forEach((element) => {
                 if (this.simpleCollisionCheck(touch, element)) {
                     touched = element;
                 }
             });
             if (!touched) {
-                this.currentStage.onTouchQueue.forEach(func => {
+                this.currentStage.onTouchQueue.forEach((func) => {
                     func(event, this);
                 });
             }
@@ -266,7 +269,27 @@ class FiskGame {
         if (this.currentStage) {
             event.preventDefault();
             if (this.currentStage.onMouseMoveQueue.length > 0) {
-                this.currentStage.onMouseMoveQueue.forEach(func => {
+                this.currentStage.onMouseMoveQueue.forEach((func) => {
+                    func(event, this);
+                });
+            }
+        }
+    }
+    onMouseUp(event) {
+        if (this.currentStage) {
+            event.preventDefault();
+            if (this.currentStage.onMouseUpQueue.length > 0) {
+                this.currentStage.onMouseUpQueue.forEach((func) => {
+                    func(event, this);
+                });
+            }
+        }
+    }
+    onMouseDown(event) {
+        if (this.currentStage) {
+            event.preventDefault();
+            if (this.currentStage.onMouseDownQueue.length > 0) {
+                this.currentStage.onMouseDownQueue.forEach((func) => {
                     func(event, this);
                 });
             }
@@ -276,7 +299,17 @@ class FiskGame {
         if (this.currentStage) {
             event.preventDefault();
             if (this.currentStage.onTouchMoveQueue.length > 0) {
-                this.currentStage.onTouchMoveQueue.forEach(func => {
+                this.currentStage.onTouchMoveQueue.forEach((func) => {
+                    func(event, this);
+                });
+            }
+        }
+    }
+    onTouchEnd(event) {
+        if (this.currentStage) {
+            event.preventDefault();
+            if (this.currentStage.onTouchEndQueue.length > 0) {
+                this.currentStage.onTouchEndQueue.forEach((func) => {
                     func(event, this);
                 });
             }
@@ -284,12 +317,15 @@ class FiskGame {
     }
     bindClick() {
         this.canvas.addEventListener("touchstart", this.onTouch.bind(this));
-        this.canvas.addEventListener("mousedown", this.onClick.bind(this));
-        this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
-        this.canvas.addEventListener('touchmove', this.onTouchMove.bind(this));
+        this.canvas.addEventListener("touchend", this.onTouchEnd.bind(this));
+        this.canvas.addEventListener("click", this.onClick.bind(this));
+        this.canvas.addEventListener("mousemove", this.onMouseMove.bind(this));
+        this.canvas.addEventListener("mouseup", this.onMouseUp.bind(this));
+        this.canvas.addEventListener("mousedown", this.onMouseDown.bind(this));
+        this.canvas.addEventListener("touchmove", this.onTouchMove.bind(this));
     }
     createMainCanvas(selector) {
-        const canvas = document.createElement('canvas');
+        const canvas = document.createElement("canvas");
         const parent = document.querySelector(selector);
         if (canvas && parent) {
             canvas.width = this.width;
@@ -307,7 +343,7 @@ class FiskGame {
     render() {
         this.ctx.clearRect(0, 0, this.width, this.height);
         if (this.currentStage) {
-            this.currentStage.renderQueue.forEach(element => {
+            this.currentStage.renderQueue.forEach((element) => {
                 element.render(this.ctx);
             });
         }
@@ -336,63 +372,10 @@ class FiskGame {
     }
     logic() {
         if (this.currentStage) {
-            this.currentStage.logicQueue.forEach(element => {
+            this.currentStage.logicQueue.forEach((element) => {
                 element.logic(this);
             });
         }
-    }
-}
-
-class GameStage {
-    constructor(config = {
-        entities: [],
-        gameReference: {}
-    }) {
-        this.logicQueue = [];
-        this.renderQueue = [];
-        this.onClickQueue = [];
-        this.entities = [];
-        this.onClickQueue = config.onClickQueue ? config.onClickQueue : [];
-        this.onTouchQueue = config.onTouchQueue ? config.onTouchQueue : [];
-        this.onTouchMoveQueue = config.onTouchMoveQueue ? config.onTouchMoveQueue : [];
-        this.onMouseMoveQueue = config.onMouseMoveQueue ? config.onMouseMoveQueue : [];
-        this.onKeydownQueue = config.onKeydownQueue ? config.onKeydownQueue : [];
-        this.onKeyupQueue = config.onKeyupQueue ? config.onKeyupQueue : [];
-        this.collisionQueue = [];
-        this.interactors = [];
-        this.setupEntities(this.entities, config.gameReference);
-        this.populateEntities(config.entities);
-    }
-    setupEntities(entities, game) {
-        entities.forEach(entity => {
-            if (entity.setup) {
-                entity.setup(game);
-            }
-        });
-    }
-    populateEntities(entities) {
-        entities.forEach(entity => {
-            this.entities.push(entity);
-            const interactable = entity;
-            if (interactable.interactive) {
-                this.interactors.push(interactable);
-            }
-            const logical = entity;
-            if (logical.logical) {
-                this.logicQueue.push(logical);
-            }
-            const renderable = entity;
-            if (renderable.renderable) {
-                this.renderQueue.push(renderable);
-            }
-            const collidable = entity;
-            if (collidable.collidable) {
-                this.collisionQueue.push(collidable);
-            }
-        });
-    }
-    removeEntity(entity) {
-        removeFromStage(entity, this);
     }
 }
 
@@ -441,11 +424,14 @@ function isEngine(entity) {
     return entity.currentStage !== undefined;
 }
 function removeFromStage(entity, gameStage) {
-    const stage = isEngine(gameStage) ? gameStage.currentStage : gameStage;
+    const stage = isEngine(gameStage)
+        ? gameStage.currentStage
+        : gameStage;
     const entityIndex = stage.entities.indexOf(entity);
     const logicIndex = stage.logicQueue.indexOf(entity);
     const renderIndex = stage.renderQueue.indexOf(entity);
     const collisionIndex = stage.collisionQueue.indexOf(entity);
+    const interactorsIndex = stage.interactors.indexOf(entity);
     if (entityIndex >= 0) {
         stage.entities.splice(entityIndex, 1);
     }
@@ -457,6 +443,9 @@ function removeFromStage(entity, gameStage) {
     }
     if (collisionIndex >= 0) {
         stage.collisionQueue.splice(collisionIndex, 1);
+    }
+    if (interactorsIndex >= 0) {
+        stage.interactors.splice(interactorsIndex, 1);
     }
 }
 
@@ -510,6 +499,68 @@ function randomDecimalBetween(min, max) {
     const rand = Math.random() * (max - min) + min;
     const power = Math.pow(10, decimalPlaces);
     return Math.floor(rand * power) / power;
+}
+
+class GameStage {
+    constructor(config = {
+        entities: [],
+        gameReference: {},
+    }) {
+        this.logicQueue = [];
+        this.renderQueue = [];
+        this.onClickQueue = [];
+        this.entities = [];
+        this.onClickQueue = config.onClickQueue ? config.onClickQueue : [];
+        this.onTouchQueue = config.onTouchQueue ? config.onTouchQueue : [];
+        this.onTouchMoveQueue = config.onTouchMoveQueue
+            ? config.onTouchMoveQueue
+            : [];
+        this.onTouchEndQueue = config.onTouchEndQueue ? config.onTouchEndQueue : [];
+        this.onMouseMoveQueue = config.onMouseMoveQueue
+            ? config.onMouseMoveQueue
+            : [];
+        this.onMouseUpQueue = config.onMouseUpQueue ? config.onMouseUpQueue : [];
+        this.onMouseDownQueue = config.onMouseDownQueue
+            ? config.onMouseDownQueue
+            : [];
+        this.onKeydownQueue = config.onKeydownQueue ? config.onKeydownQueue : [];
+        this.onKeyupQueue = config.onKeyupQueue ? config.onKeyupQueue : [];
+        this.collisionQueue = [];
+        this.interactors = [];
+        this.setupEntities(this.entities, config.gameReference);
+        this.populateEntities(config.entities);
+    }
+    setupEntities(entities, game) {
+        entities.forEach((entity) => {
+            if (entity.setup) {
+                entity.setup(game);
+            }
+        });
+    }
+    populateEntities(entities) {
+        entities.forEach((entity) => {
+            this.entities.push(entity);
+            const interactable = entity;
+            if (interactable.interactive) {
+                this.interactors.push(interactable);
+            }
+            const logical = entity;
+            if (logical.logical) {
+                this.logicQueue.push(logical);
+            }
+            const renderable = entity;
+            if (renderable.renderable) {
+                this.renderQueue.push(renderable);
+            }
+            const collidable = entity;
+            if (collidable.collidable) {
+                this.collisionQueue.push(collidable);
+            }
+        });
+    }
+    removeEntity(entity) {
+        removeFromStage(entity, this);
+    }
 }
 
 export { FiskGame, GameStage, InteractiveImage, StaticImage, hexToRgb, randomDecimalBetween, randomNumberBetween, removeFromStage, rgbToRgba };
